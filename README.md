@@ -1,5 +1,5 @@
 # GoMoku
-This is an homework of the course Data Structures and Algorithms in Peking University
+This is a homework of the course Data Structures and Algorithms in Peking University
   
 ## This repository contains following files:  
   `GoMoku_v1.2.1.c` is the source code of GoMoku version 1.2.1 writen in C <br>
