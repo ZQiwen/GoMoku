@@ -7,19 +7,19 @@
 #define VERSION "1.2.1"
 char chessboard[MAX_ROW][MAX_COL]; // 'x': black piece; 'o': white piece; '.': no piece;
 
-int aix, aiy;// AIÑ¡ÔñµÄÂä×ÓÎ»ÖÃ
-int halfround;// µÚ¼¸¸ö °ë»ØºÏ
+int aix, aiy;// AIé€‰æ‹©çš„è½å­ä½ç½®
+int halfround;// ç¬¬å‡ ä¸ª åŠå›žåˆ
 
-// ¶¨Òå°Ë¸ö·½Ïò
+// å®šä¹‰å…«ä¸ªæ–¹å‘
 int dx[]={-1,-1,0,1,1,1,0,-1};
 int dy[]={0,1,1,1,0,-1,-1,-1};
-// µ±Ç°ÐÐ¶¯·½µÄÑÕÉ«
+// å½“å‰è¡ŒåŠ¨æ–¹çš„é¢œè‰²
 char color[6];
 char pieceShape[2]={'x','o'};
 
 int useColor,GameMode;// v1.2
 
-int DropInsideBoard(int x,int y)//ÅÐ¶Ï(x,y)Î»ÖÃÊÇ·ñÔÚÆåÅÌ·¶Î§ÄÚ
+int DropInsideBoard(int x,int y)//åˆ¤æ–­(x,y)ä½ç½®æ˜¯å¦åœ¨æ£‹ç›˜èŒƒå›´å†…
 {
     if(x>=0&&x<MAX_COL&&y>=0&&y<MAX_ROW){
         return 1;
@@ -27,10 +27,10 @@ int DropInsideBoard(int x,int y)//ÅÐ¶Ï(x,y)Î»ÖÃÊÇ·ñÔÚÆåÅÌ·¶Î§ÄÚ
     return 0;
 }
 
-#define DropOverlaping(x, y)  (chessboard[x][y]!='.')      //ÅÐ¶Ï(x,y)Î»ÖÃÊÇ·ñÒÑ¾­ÒÑÓÐÆå×Ó
+#define DropOverlaping(x, y)  (chessboard[x][y]!='.')      //åˆ¤æ–­(x,y)ä½ç½®æ˜¯å¦å·²ç»å·²æœ‰æ£‹å­
 
 
-void DisplayChessBoard()//´òÓ¡µ±Ç°ÆåÅÌ×´Ì¬
+void DisplayChessBoard()//æ‰“å°å½“å‰æ£‹ç›˜çŠ¶æ€
 {
     for(int i=0;i<MAX_COL+2;i++){
         if(i==0){
@@ -57,7 +57,7 @@ void DisplayChessBoard()//´òÓ¡µ±Ç°ÆåÅÌ×´Ì¬
     printf("\n\n");
 }
 
-void Init()//³õÊ¼»¯ÆåÅÌ
+void Init()//åˆå§‹åŒ–æ£‹ç›˜
 {
     memset(chessboard,'.',sizeof(chessboard));
 //	for (int row = 0; row < MAX_ROW; ++row) {
@@ -67,7 +67,7 @@ void Init()//³õÊ¼»¯ÆåÅÌ
 //	}
 }
 
-void DropPiece(int tmpx,int tmpy,int hr)//Âä×Ó
+void DropPiece(int tmpx,int tmpy,int hr)//è½å­
 {
     if(hr%2){//white piece
         chessboard[tmpx][tmpy]='o';
@@ -80,11 +80,11 @@ void DropPiece(int tmpx,int tmpy,int hr)//Âä×Ó
     return;
 }
 
-int GameIsOver(int x,int y) // ÅÐ¶ÏÏÂÔÚ(x,y)µÄÕâ²½Æå»á²»»á²úÉúÎå×ÓÁ¬Öé»òÕßÈÃÆåÅÌ±»ÆÌÂú¡£Èç¹ûÓÎÏ·½áÊø£¬´òÓ¡½á¹û¡£
+int GameIsOver(int x,int y) // åˆ¤æ–­ä¸‹åœ¨(x,y)çš„è¿™æ­¥æ£‹ä¼šä¸ä¼šäº§ç”Ÿäº”å­è¿žç æˆ–è€…è®©æ£‹ç›˜è¢«é“ºæ»¡ã€‚å¦‚æžœæ¸¸æˆç»“æŸï¼Œæ‰“å°ç»“æžœã€‚
 {
     int numPiece,nextx,nexty;
 
-    for(int dirctn=0;dirctn<4;dirctn++){// ËÑË÷°Ë¸ö·½ÏòÉÏ´Ó(x,y)³ö·¢µÄÁ¬ÐøÏàÍ¬Æå×ÓÊýÁ¿
+    for(int dirctn=0;dirctn<4;dirctn++){// æœç´¢å…«ä¸ªæ–¹å‘ä¸Šä»Ž(x,y)å‡ºå‘çš„è¿žç»­ç›¸åŒæ£‹å­æ•°é‡
         numPiece=1;
         nextx=x+dx[dirctn];
         nexty=y+dy[dirctn];
@@ -100,21 +100,21 @@ int GameIsOver(int x,int y) // ÅÐ¶ÏÏÂÔÚ(x,y)µÄÕâ²½Æå»á²»»á²úÉúÎå×ÓÁ¬Öé»òÕßÈÃÆåÅÌ
             nextx=nextx-dx[dirctn];
             nexty=nexty-dy[dirctn];
         }
-        if(numPiece==5){ //´ï³ÉÎå×ÓÁ¬Öé
+        if(numPiece==5){ //è¾¾æˆäº”å­è¿žç 
             printf("Game Over: %s wins!\n",color);
             return 1;
         }
     }
-    // Ã»ÓÐ´ï³ÉÎå×ÓÁ¬Öé¡£
-    if(halfround==MAX_COL*MAX_ROW){ // ÆåÅÌÆÌÂú£¬Æ½¾Ö¡£
+    // æ²¡æœ‰è¾¾æˆäº”å­è¿žç ã€‚
+    if(halfround==MAX_COL*MAX_ROW){ // æ£‹ç›˜é“ºæ»¡ï¼Œå¹³å±€ã€‚
         printf("Game Over: Drawn!\n");
         return 1;
     }
-    // ÓÎÏ·¼ÌÐø
+    // æ¸¸æˆç»§ç»­
     return 0;
 }
 
-void ThinkNextDrop()//AI ¾ö¶¨Âä×ÓÎ»ÖÃ
+void ThinkNextDrop()//AI å†³å®šè½å­ä½ç½®
 {
     // taking strategy RandomStrategy
     //RandomStrategy();
@@ -125,12 +125,12 @@ void ThinkNextDrop()//AI ¾ö¶¨Âä×ÓÎ»ÖÃ
     return;
 }
 
-void RandomStrategy()// ÍòÄÜµÄËæ»ú²ßÂÔ
+void RandomStrategy()// ä¸‡èƒ½çš„éšæœºç­–ç•¥
 {
     srand((unsigned)time(NULL));
     aix=rand() % 15;
     aiy=rand() % 15;
-    while(DropOverlaping(aix,aiy)){// Èç¹ûËæ»úµ½µÄÎ»ÖÃÒÑ¾­ÓÐÆå×Ó£¬ÔòË³ÑÓµ½ÏÂÒ»¸öÎ»ÖÃ
+    while(DropOverlaping(aix,aiy)){// å¦‚æžœéšæœºåˆ°çš„ä½ç½®å·²ç»æœ‰æ£‹å­ï¼Œåˆ™é¡ºå»¶åˆ°ä¸‹ä¸€ä¸ªä½ç½®
         aix=aix+(aiy+1)/15;
         aiy=(aiy+1)%15;
     }
@@ -138,9 +138,9 @@ void RandomStrategy()// ÍòÄÜµÄËæ»ú²ßÂÔ
 }
 
 
-void NeighborStrategy() //È«ÆåÅÌ±éÀú£¬¸ù¾ÝÖÜÎ§µÄÆå×Ó¸øÂäµã´ò·Ö¡£
-// ÆÀ·Ö¹æÔò£º´Ó±éÀúµ½µÄÎ»ÖÃÏòËÄ¸ö·½ÏòËÑË÷£¬Ã¿ÓÐÒ»¸ö·½ÏòÉÏ´æÔÚÓë¸ÃÎ»ÖÃÏàÁÚµÄÁ¬ÐønÃ¶Í¬É«Æå×Ó£¬¸ÃÎ»ÖÃ·ÖÊý¼Ón^3£»
-// ·ÖÊýÏàÍ¬Ê±£¬ÓÅÏÈÑ¡Ôñ¾àÀëÆåÅÌÖÐÐÄ¸ü½üµÄÎ»ÖÃ¡£
+void NeighborStrategy() //å…¨æ£‹ç›˜éåŽ†ï¼Œæ ¹æ®å‘¨å›´çš„æ£‹å­ç»™è½ç‚¹æ‰“åˆ†ã€‚
+// è¯„åˆ†è§„åˆ™ï¼šä»ŽéåŽ†åˆ°çš„ä½ç½®å‘å››ä¸ªæ–¹å‘æœç´¢ï¼Œæ¯æœ‰ä¸€ä¸ªæ–¹å‘ä¸Šå­˜åœ¨ä¸Žè¯¥ä½ç½®ç›¸é‚»çš„è¿žç»­næžšåŒè‰²æ£‹å­ï¼Œè¯¥ä½ç½®åˆ†æ•°åŠ n^3ï¼›
+// åˆ†æ•°ç›¸åŒæ—¶ï¼Œä¼˜å…ˆé€‰æ‹©è·ç¦»æ£‹ç›˜ä¸­å¿ƒæ›´è¿‘çš„ä½ç½®ã€‚
 {
     int nextx,nexty,numFriendPiece,numOppositePiece,Score,maxScore;
     int maxlocalScore,localScore,posiEndx,posiEndy,negEndx,negEndy; // v1.1
@@ -154,7 +154,7 @@ void NeighborStrategy() //È«ÆåÅÌ±éÀú£¬¸ù¾ÝÖÜÎ§µÄÆå×Ó¸øÂäµã´ò·Ö¡£
                 continue;
             }
             Score=0;
-            for(int dirctn=0;dirctn<4;dirctn++){// ËÑË÷ËÄ¸ö·½ÏòÉÏ´Ó(x,y)³ö·¢µÄÍ¬Ò»·½µÄÆå×ÓÊýÁ¿, v1.1
+            for(int dirctn=0;dirctn<4;dirctn++){// æœç´¢å››ä¸ªæ–¹å‘ä¸Šä»Ž(x,y)å‡ºå‘çš„åŒä¸€æ–¹çš„æ£‹å­æ•°é‡, v1.1
 
                 maxlocalScore=0;
                 for(int npp=0;npp<5;npp++){
@@ -222,7 +222,7 @@ void NeighborStrategy() //È«ÆåÅÌ±éÀú£¬¸ù¾ÝÖÜÎ§µÄÆå×Ó¸øÂäµã´ò·Ö¡£
             }
         }
     }
-//    if (maxScore==0){ //Ã»ÓÐºÃµÄÑ¡Ôñ£¬¾ÍËæÔµÑ¡Ò»¸ö
+//    if (maxScore==0){ //æ²¡æœ‰å¥½çš„é€‰æ‹©ï¼Œå°±éšç¼˜é€‰ä¸€ä¸ª
 //        RandomStrategy();
 //    }
 //    printf("TEST MESSAGE::maxScore=%d\n",maxScore);
@@ -230,58 +230,58 @@ void NeighborStrategy() //È«ÆåÅÌ±éÀú£¬¸ù¾ÝÖÜÎ§µÄÆå×Ó¸øÂäµã´ò·Ö¡£
 }
 
 void main() {
-    //Ã¿Ò»²½Âä×ÓµÄÎ»ÖÃ¶¼ÓÉÓÃ»§ÊäÈë£»ÊäÈëÁ½¸öÕýÕûÊý£¬ÒÔ¿Õ¸ñ¸ô¿ª£»
-    //Ã¿Ò»²½Âä×ÓÖ®ºó£¬AI»á¸ø³öÒ»¸öÂä×ÓÎ»ÖÃ½¨Òé¡£
-    //Íæ¼Ò¿ÉÒÔ°çÑÝÒ»·½×ÜÊÇ²ÉÄÉAIµÄ½¨Òé£¬´Ó¶øÊµÏÖÈË»ú¶ÔÕ½¡£
-    //Ò²¿ÉÒÔÑ¡ÔñÒ»Ö±ÎÞÊÓAIµÄ½¨Òé£¬´Ó¶øÊµÏÖË«ÈË¶ÔÕ½»òÕß×ÔÎÒ¶ÔÕ½¡£
+    //æ¯ä¸€æ­¥è½å­çš„ä½ç½®éƒ½ç”±ç”¨æˆ·è¾“å…¥ï¼›è¾“å…¥ä¸¤ä¸ªæ­£æ•´æ•°ï¼Œä»¥ç©ºæ ¼éš”å¼€ï¼›
+    //æ¯ä¸€æ­¥è½å­ä¹‹åŽï¼ŒAIä¼šç»™å‡ºä¸€ä¸ªè½å­ä½ç½®å»ºè®®ã€‚
+    //çŽ©å®¶å¯ä»¥æ‰®æ¼”ä¸€æ–¹æ€»æ˜¯é‡‡çº³AIçš„å»ºè®®ï¼Œä»Žè€Œå®žçŽ°äººæœºå¯¹æˆ˜ã€‚
+    //ä¹Ÿå¯ä»¥é€‰æ‹©ä¸€ç›´æ— è§†AIçš„å»ºè®®ï¼Œä»Žè€Œå®žçŽ°åŒäººå¯¹æˆ˜æˆ–è€…è‡ªæˆ‘å¯¹æˆ˜ã€‚
 
     system("mode con cols=120 lines=80");
     system("title=GoMoku_zqw");
 //    system("color 70");
 
-    // ´òÓ¡ÓÎÏ·ËµÃ÷£º
+    // æ‰“å°æ¸¸æˆè¯´æ˜Žï¼š
     printf("#########################################################################################\n#\n");
-    printf("# »¶Ó­Ê¹ÓÃGoMoku_v%s\n",VERSION);
-    printf("# ¡ª¡ªËüÓÐ×ÅÒ»¸öÉÔºÃµ«ÊÇÒÀÈ»¼òÂªµÄ½çÃæ£¬²¢Ìá¹©ÁËÒ»¸öÉÔºÃµÄÈË¹¤ÖÇÕÏ¹©Íæ¼ÒÁ·Ï°\n#\n#\n");
-    printf("# Ê¹ÓÃËµÃ÷£º\n");
-    printf("#     Ã¿Ò»²½Âä×ÓµÄÎ»ÖÃ¶¼ÓÉÓÃ»§ÊäÈë¡£\n");
-    printf("#     ÊäÈë¸ñÊ½ÎªÁ½¸ö£¨Ê®½øÖÆ£©ÕýÕûÊý£¬·Ö±ð´ú±íÐÐºÅºÍÁÐºÅ£¨ÀýÈç£º2 13£©£¬ÒÔ¿Õ¸ñ¸ô¿ª¡£\n");
-    printf("#     ÆåÅÌ´óÐ¡Îª15x15£¬ÓÃ'x'´ú±íºÚ×Ó£¬'o'´ú±í°××Ó£¬'.'´ú±íÎÞÆå×Ó¡£\n");
-    printf("#     ÆåÅÌ±ßÔµ±ê³öÁËÐÐºÅºÍÁÐºÅ¡£\n");
-//    printf("#     ÓÃ»§Ã¿ÊäÈëÒ»²½Âä×ÓÎ»ÖÃÖ®ºó£¬AI»á¸ø³öÒ»¸öÂä×ÓÎ»ÖÃ½¨Òé¡£\n");
-    printf("#     Íæ¼Ò¿ÉÒÔÑ¡ÔñË«ÈË¶ÔÕ½»òÕßÈË»ú¶ÔÕ½¡£\n");
-    printf("#     ÈË»úÄ£Ê½ÏÂµÄµçÄÔAIµÄ²ßÂÔ·Ç³£¼òµ¥£¬Å°±¬Ëü¼¸ºõÃ»ÓÐÄÑ¶È¡£\n");
-//    printf("#     Ò²¿ÉÒÔÑ¡ÔñÒ»Ö±ÎÞÊÓAIµÄ½¨Òé£¬´Ó¶øÊµÏÖË«ÈË¶ÔÕ½»òÕß×Ô¼ºÓë×Ô¼º¶ÔÕ½¡£\n");
-//    printf("#     »òÕßÍ¬Ê±°çÑÝ¶ÔÕ½Ë«·½£¬×ÜÊÇ²ÉÄÉAIµÄ½¨Òé£¬´Ó¶ø¹Û²ìAIÓëAI¶ÔÕ½¡£\n");
-    printf("#     ÌáÊ¾£º°´×¡Ctrl²¢¹ö¶¯Êó±êÖÐ¼ü¿ÉÒÔµ÷ÕûÏÔÊ¾´óÐ¡¡£\n");
+    printf("# æ¬¢è¿Žä½¿ç”¨GoMoku_v%s\n",VERSION);
+    printf("# â€”â€”å®ƒæœ‰ç€ä¸€ä¸ªç¨å¥½ä½†æ˜¯ä¾ç„¶ç®€é™‹çš„ç•Œé¢ï¼Œå¹¶æä¾›äº†ä¸€ä¸ªç¨å¥½çš„äººå·¥æ™ºéšœä¾›çŽ©å®¶ç»ƒä¹ \n#\n#\n");
+    printf("# ä½¿ç”¨è¯´æ˜Žï¼š\n");
+    printf("#     æ¯ä¸€æ­¥è½å­çš„ä½ç½®éƒ½ç”±ç”¨æˆ·è¾“å…¥ã€‚\n");
+    printf("#     è¾“å…¥æ ¼å¼ä¸ºä¸¤ä¸ªï¼ˆåè¿›åˆ¶ï¼‰æ­£æ•´æ•°ï¼Œåˆ†åˆ«ä»£è¡¨è¡Œå·å’Œåˆ—å·ï¼ˆä¾‹å¦‚ï¼š2 13ï¼‰ï¼Œä»¥ç©ºæ ¼éš”å¼€ã€‚\n");
+    printf("#     æ£‹ç›˜å¤§å°ä¸º15x15ï¼Œç”¨'x'ä»£è¡¨é»‘å­ï¼Œ'o'ä»£è¡¨ç™½å­ï¼Œ'.'ä»£è¡¨æ— æ£‹å­ã€‚\n");
+    printf("#     æ£‹ç›˜è¾¹ç¼˜æ ‡å‡ºäº†è¡Œå·å’Œåˆ—å·ã€‚\n");
+//    printf("#     ç”¨æˆ·æ¯è¾“å…¥ä¸€æ­¥è½å­ä½ç½®ä¹‹åŽï¼ŒAIä¼šç»™å‡ºä¸€ä¸ªè½å­ä½ç½®å»ºè®®ã€‚\n");
+    printf("#     çŽ©å®¶å¯ä»¥é€‰æ‹©åŒäººå¯¹æˆ˜æˆ–è€…äººæœºå¯¹æˆ˜ã€‚\n");
+    printf("#     äººæœºæ¨¡å¼ä¸‹çš„ç”µè„‘AIçš„ç­–ç•¥éžå¸¸ç®€å•ï¼Œè™çˆ†å®ƒå‡ ä¹Žæ²¡æœ‰éš¾åº¦ã€‚\n");
+//    printf("#     ä¹Ÿå¯ä»¥é€‰æ‹©ä¸€ç›´æ— è§†AIçš„å»ºè®®ï¼Œä»Žè€Œå®žçŽ°åŒäººå¯¹æˆ˜æˆ–è€…è‡ªå·±ä¸Žè‡ªå·±å¯¹æˆ˜ã€‚\n");
+//    printf("#     æˆ–è€…åŒæ—¶æ‰®æ¼”å¯¹æˆ˜åŒæ–¹ï¼Œæ€»æ˜¯é‡‡çº³AIçš„å»ºè®®ï¼Œä»Žè€Œè§‚å¯ŸAIä¸ŽAIå¯¹æˆ˜ã€‚\n");
+    printf("#     æç¤ºï¼šæŒ‰ä½Ctrlå¹¶æ»šåŠ¨é¼ æ ‡ä¸­é”®å¯ä»¥è°ƒæ•´æ˜¾ç¤ºå¤§å°ã€‚\n");
     printf("#\n");
-    printf("# v1.1°æ±¾µÄ¸üÐÂ£º\n");
-    printf("#     ÐÞ¸´ÁËv1.0ÓÎÏ·½áÊøºóÉÁÍËµÄbug¡£\n");
-    printf("#     ÔöÇ¿µÄAI£¬ÏëÅ°±¬Õâ¸ö°æ±¾µÄAIÉÔÎ¢ÐèÒª¶¯Ò»µãÄÔ×Ó¡£\n");
-//    printf("#     ÌáÊ¾£ºÈÃAIÏÈÊÖ»á±äµÃÉÔÎ¢ÓÐÒ»µãÀ§ÄÑ¡£\n");
-    printf("# v1.2.1°æ±¾µÄ¸üÐÂ£º\n");
-    printf("#     ÐÞ¸´ÁËË«ÈËÄ£Ê½ÏÂÒ»Ð©Çé¿öÏÂÎÞ·¨ÅÐ¶¨Îå×ÓÁ¬ÖéµÄbug¡£\n");
-    printf("#     Ôö¼ÓÁËÄ£Ê½Ñ¡Ôñ¹¦ÄÜ£¬Ñ¡ÔñÈË»ú¶ÔÕ½Ä£Ê½ºóÓÃ»§½«²»ÐèÒªÎªAIÂä×Ó¡£\n");
-    printf("#     ¸üÐÂÁËÆåÅÌÏÔÊ¾£¨ÌØ±ð¸ÐÐ»À´×ÔyuukaiµÄ½¨Òé£©¡£\n");
-    printf("# v2.1°æ±¾£¨¿ª·¢ÖÐ£©¡£\n");
-    printf("#     ½«Ê¹ÓÃ»úÆ÷Ñ§Ï°ÐÍµÄAI¡£\n");
+    printf("# v1.1ç‰ˆæœ¬çš„æ›´æ–°ï¼š\n");
+    printf("#     ä¿®å¤äº†v1.0æ¸¸æˆç»“æŸåŽé—ªé€€çš„bugã€‚\n");
+    printf("#     å¢žå¼ºçš„AIï¼Œæƒ³è™çˆ†è¿™ä¸ªç‰ˆæœ¬çš„AIç¨å¾®éœ€è¦åŠ¨ä¸€ç‚¹è„‘å­ã€‚\n");
+//    printf("#     æç¤ºï¼šè®©AIå…ˆæ‰‹ä¼šå˜å¾—ç¨å¾®æœ‰ä¸€ç‚¹å›°éš¾ã€‚\n");
+    printf("# v1.2.1ç‰ˆæœ¬çš„æ›´æ–°ï¼š\n");
+    printf("#     ä¿®å¤äº†åŒäººæ¨¡å¼ä¸‹ä¸€äº›æƒ…å†µä¸‹æ— æ³•åˆ¤å®šäº”å­è¿žç çš„bugã€‚\n");
+    printf("#     å¢žåŠ äº†æ¨¡å¼é€‰æ‹©åŠŸèƒ½ï¼Œé€‰æ‹©äººæœºå¯¹æˆ˜æ¨¡å¼åŽç”¨æˆ·å°†ä¸éœ€è¦ä¸ºAIè½å­ã€‚\n");
+    printf("#     æ›´æ–°äº†æ£‹ç›˜æ˜¾ç¤ºï¼ˆç‰¹åˆ«æ„Ÿè°¢æ¥è‡ªyuukaiçš„å»ºè®®ï¼‰ã€‚\n");
+    printf("# v2.1ç‰ˆæœ¬ï¼ˆå¼€å‘ä¸­ï¼‰ã€‚\n");
+    printf("#     å°†ä½¿ç”¨æœºå™¨å­¦ä¹ åž‹çš„AIã€‚\n");
     printf("#\n#\n#\n#\n");
 
-    printf("# ×îºó£¬»¶Ó­ÈÎºÎÐÎÊ½ÎÊÌâ»ò½¨Òé£¬ÎÒµÄÓÊÏä£ºzhuqiwen1600012437@pku.edu.cn\n");
+    printf("# æœ€åŽï¼Œæ¬¢è¿Žä»»ä½•å½¢å¼é—®é¢˜æˆ–å»ºè®®ï¼Œæˆ‘çš„é‚®ç®±ï¼šzhuqiwen1600012437@pku.edu.cn\n");
     printf("#########################################################################################\n");
-    printf("½¨ÒéÄã½«¸Ã´°¿ÚÈ«ÆÁ£¬°´×¡Ctrl¹ö¶¯Êó±êÖÐ¼ü¾¡Á¿ÈÃÎÄ×Ö³äÂúÕû¸öÆÁÄ»¡£");
+    printf("å»ºè®®ä½ å°†è¯¥çª—å£å…¨å±ï¼ŒæŒ‰ä½Ctrlæ»šåŠ¨é¼ æ ‡ä¸­é”®å°½é‡è®©æ–‡å­—å……æ»¡æ•´ä¸ªå±å¹•ã€‚");
     system("pause");
     system("cls");
-    printf("ÇëÑ¡ÔñÄ£Ê½£¬ÊäÈëÊý×Ö1»òÕß2È»ºó»Ø³µ£¨1£ºÈË»ú¶ÔÕ½/2£ºË«ÈË¶ÔÕ½£©£º\n");
+    printf("è¯·é€‰æ‹©æ¨¡å¼ï¼Œè¾“å…¥æ•°å­—1æˆ–è€…2ç„¶åŽå›žè½¦ï¼ˆ1ï¼šäººæœºå¯¹æˆ˜/2ï¼šåŒäººå¯¹æˆ˜ï¼‰ï¼š\n");
     scanf("%d",&GameMode);
     if(GameMode==1){
-        printf("ÒÑÑ¡ÔñÈË»ú¶ÔÕ½Ä£Ê½£¬ÇëÑ¡ÔñÖ´ºÚ×Ó£¨ÏÈÊÖ£©»¹ÊÇ°××Ó£¨ºóÊÖ£©¡£\n");
-        printf("ÊäÈëÊý×Ö0»òÕß1È»ºó»Ø³µ£¨0£ºÖ´ºÚ×Ó/1£ºÖ´°××Ó£©£º\n");
+        printf("å·²é€‰æ‹©äººæœºå¯¹æˆ˜æ¨¡å¼ï¼Œè¯·é€‰æ‹©æ‰§é»‘å­ï¼ˆå…ˆæ‰‹ï¼‰è¿˜æ˜¯ç™½å­ï¼ˆåŽæ‰‹ï¼‰ã€‚\n");
+        printf("è¾“å…¥æ•°å­—0æˆ–è€…1ç„¶åŽå›žè½¦ï¼ˆ0ï¼šæ‰§é»‘å­/1ï¼šæ‰§ç™½å­ï¼‰ï¼š\n");
         scanf("%d",&useColor);
     }
     if(GameMode==2){
-        printf("ÒÑÑ¡ÔñË«ÈË¶ÔÕ½Ä£Ê½¡£\n");
-//        printf("ÊäÈëÊý×Ö0»òÕß1È»ºó»Ø³µ£¨0£ºÖ´ºÚ×Ó/1£ºÖ´ºÚ×Ó£©£º\n");
+        printf("å·²é€‰æ‹©åŒäººå¯¹æˆ˜æ¨¡å¼ã€‚\n");
+//        printf("è¾“å…¥æ•°å­—0æˆ–è€…1ç„¶åŽå›žè½¦ï¼ˆ0ï¼šæ‰§é»‘å­/1ï¼šæ‰§é»‘å­ï¼‰ï¼š\n");
 //        scanf("%d",&useColor);
     }
     system("pause");
@@ -292,12 +292,12 @@ void main() {
     int GameCanceled=1;
     halfround=0;
 
-    // ´òÓ¡ÆåÅÌ
+    // æ‰“å°æ£‹ç›˜
     DisplayChessBoard();
 
-    if(GameMode==1){ //ÈË»ú¶ÔÕ½
+    if(GameMode==1){ //äººæœºå¯¹æˆ˜
         if(useColor==1){
-            // AIÑ¡ÔñÏÂÒ»²½Âä×ÓÎ»ÖÃ£¬²¢´òÓ¡
+            // AIé€‰æ‹©ä¸‹ä¸€æ­¥è½å­ä½ç½®ï¼Œå¹¶æ‰“å°
             ThinkNextDrop();
             DropPiece(aix,aiy,halfround);
             halfround++;
@@ -305,40 +305,40 @@ void main() {
             printf("the AI has dropped: %d %d\n",aix,aiy);
             printf("Round 0.Input position to drop for white(input 'Ctrl+D' to exit):");
         }
-        else{ //ÌáÊ¾ÓÃ»§ÊäÈë×ø±ê
+        else{ //æç¤ºç”¨æˆ·è¾“å…¥åæ ‡
             printf("Round 0.Input position to drop for black(input 'Ctrl+D' to exit):");
         }
     }
     else{
-        //ºÚ×ÓÏÈÐÐ
+        //é»‘å­å…ˆè¡Œ
         strcpy(color,"black");
         printf("Round %d.Input position to drop for %s(input 'Ctrl+D' to exit):",halfround/2,color);
     }
 
-    while(scanf("%d%d",&x,&y)){// ÓÃ»§ÊäÈëÂä×ÓÎ»ÖÃ
+    while(scanf("%d%d",&x,&y)){// ç”¨æˆ·è¾“å…¥è½å­ä½ç½®
 
-        if(GameMode==2){ //Ë«ÈË¶ÔÕ½Ä£Ê½
-            if( !DropInsideBoard(x,y) ){ // ÊäÈëµÄÎ»ÖÃ³¬³öÆåÅÌ·¶Î§£¬ÖØÐÂÊäÈë
+        if(GameMode==2){ //åŒäººå¯¹æˆ˜æ¨¡å¼
+            if( !DropInsideBoard(x,y) ){ // è¾“å…¥çš„ä½ç½®è¶…å‡ºæ£‹ç›˜èŒƒå›´ï¼Œé‡æ–°è¾“å…¥
                 printf("Drop outside board! Chose another position:");
                 continue;
             }
-            if( DropOverlaping(x,y) ){ // ÊäÈëµÄÎ»ÖÃÒÑ¾­±»Õ¼¾Ý£¬ÖØÐÂÊäÈë
+            if( DropOverlaping(x,y) ){ // è¾“å…¥çš„ä½ç½®å·²ç»è¢«å æ®ï¼Œé‡æ–°è¾“å…¥
                 printf("This position has been taken! Chose another one:");
                 continue;
             }
 
-            // ÂäÒ»²½×Ó
+            // è½ä¸€æ­¥å­
             DropPiece(x,y,halfround);
 
-            // ²ÃÅÐ
-            if(GameIsOver(x,y)){ //ÓÎÏ·½áÊø
+            // è£åˆ¤
+            if(GameIsOver(x,y)){ //æ¸¸æˆç»“æŸ
                 GameCanceled=0;
                 break;
             }
-            else{// ÓÎÏ·¼ÌÐø£¬½øÈëÏÂÒ»¸öhalf round
+            else{// æ¸¸æˆç»§ç»­ï¼Œè¿›å…¥ä¸‹ä¸€ä¸ªhalf round
                 halfround++;
 
-                // ¿´ÂÖµ½ÄÄ·½ÐÐ¶¯
+                // çœ‹è½®åˆ°å“ªæ–¹è¡ŒåŠ¨
                 if(halfround%2){
                     strcpy(color,"white");
                 }
@@ -346,43 +346,43 @@ void main() {
                     strcpy(color,"black");
                 }
 
-                // ÌáÊ¾ÓÃ»§ÊäÈëÂä×ÓÎ»ÖÃ
+                // æç¤ºç”¨æˆ·è¾“å…¥è½å­ä½ç½®
                 printf("Round %d.Input position to drop for %s(input 'Ctrl+D' to exit):",halfround/2,color);
             }
         }
-        else{ //ÈË»ú¶ÔÕ½Ä£Ê½ÏÂ
-            if( !DropInsideBoard(x,y) ){ // ÊäÈëµÄÎ»ÖÃ³¬³öÆåÅÌ·¶Î§£¬ÖØÐÂÊäÈë
+        else{ //äººæœºå¯¹æˆ˜æ¨¡å¼ä¸‹
+            if( !DropInsideBoard(x,y) ){ // è¾“å…¥çš„ä½ç½®è¶…å‡ºæ£‹ç›˜èŒƒå›´ï¼Œé‡æ–°è¾“å…¥
                 printf("Drop outside board! Chose another position:");
                 continue;
             }
-            if(DropOverlaping(x,y) ){ // ÊäÈëµÄÎ»ÖÃÒÑ¾­±»Õ¼¾Ý£¬ÖØÐÂÊäÈë
+            if(DropOverlaping(x,y) ){ // è¾“å…¥çš„ä½ç½®å·²ç»è¢«å æ®ï¼Œé‡æ–°è¾“å…¥
                 printf("This position has been taken! Chose another one:");
                 continue;
             }
 
-            // ÂäÒ»²½×Ó
+            // è½ä¸€æ­¥å­
             DropPiece(x,y,halfround);
 
-            // ²ÃÅÐ
-            if(GameIsOver(x,y)){ //ÓÎÏ·½áÊø
+            // è£åˆ¤
+            if(GameIsOver(x,y)){ //æ¸¸æˆç»“æŸ
                 GameCanceled=0;
                 break;
             }
             else{
                 halfround++;
-                // AIË¼¿¼ÏÂÒ»²½£¬²¢ÂäÒ»²½Æå
+                // AIæ€è€ƒä¸‹ä¸€æ­¥ï¼Œå¹¶è½ä¸€æ­¥æ£‹
                 ThinkNextDrop();
                 DropPiece(aix,aiy,halfround);
                 printf("the AI has dropped: %d %d\n",aix,aiy);
 
-                if(GameIsOver(aix,aiy)){ //ÓÎÏ·½áÊø
+                if(GameIsOver(aix,aiy)){ //æ¸¸æˆç»“æŸ
                     GameCanceled=0;
                     break;
                 }
-                else{// ÓÎÏ·¼ÌÐø£¬½øÈëÏÂÒ»¸öhalf round
+                else{// æ¸¸æˆç»§ç»­ï¼Œè¿›å…¥ä¸‹ä¸€ä¸ªhalf round
                     halfround++;
 
-                    // ¿´ÂÖµ½ÄÄ·½ÐÐ¶¯
+                    // çœ‹è½®åˆ°å“ªæ–¹è¡ŒåŠ¨
                     if(halfround%2){
                     strcpy(color,"white");
                     }
@@ -390,7 +390,7 @@ void main() {
                         strcpy(color,"black");
                     }
 
-                    // ÌáÊ¾ÓÃ»§ÊäÈëÂä×ÓÎ»ÖÃ
+                    // æç¤ºç”¨æˆ·è¾“å…¥è½å­ä½ç½®
                     printf("Round %d.Input position to drop for %s(input 'Ctrl+D' to exit):",halfround/2,color);
                 }
             }
